@@ -29,6 +29,12 @@ public class Waypoints : MonoBehaviour {
                 targetWayPoint = wayPointList[currentWayPoint];
             walk();
         }
+
+        if (currentWayPoint == wayPointList.Length)
+        {
+            LivesManager.livesLeft -= 1;
+            Destroy(this);
+        }
     }
 
     void walk()
