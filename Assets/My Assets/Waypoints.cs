@@ -33,7 +33,7 @@ public class Waypoints : MonoBehaviour {
         if (currentWayPoint == wayPointList.Length)
         {
             LivesManager.livesLeft -= 1;
-            Destroy(this);
+            Destroy(gameObject, 0f);
         }
     }
 
