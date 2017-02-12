@@ -37,7 +37,7 @@ public class EnemyAI : MonoBehaviour {
                     waypointIteration++;
                 } else
                 {
-                    LivesManager.livesLeft -= 1;
+                    Manager.livesLeft -= 1;
                     Destroy(gameObject, 0f);
                 }
 
@@ -48,7 +48,7 @@ public class EnemyAI : MonoBehaviour {
 
         if (health <= 0)
         {
-            LivesManager.score += pointsAwarded;
+            Manager.score += pointsAwarded;
             Destroy(gameObject, 0f);
         }
        
