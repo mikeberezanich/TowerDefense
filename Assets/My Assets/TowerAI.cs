@@ -8,6 +8,7 @@ public class TowerAI : MonoBehaviour {
     //public GameObject currTarget;
     public Projectile projectile;
     public float rateOfFire = 1f;
+    public float towerRadius;
 
     private Projectile currProjectile;
     private EnemyAI currTarget;
@@ -33,31 +34,43 @@ public class TowerAI : MonoBehaviour {
         //FindEnemy();
 
         if (currRound != Manager.roundNumber) {
-            enemiesInRound.AddRange(FindObjectsOfType(typeof(EnemyAI)) as EnemyAI[]);
-            currRound += 1;
+            enemiesInRound.Clear();
+            enemiesInRange.Clear();
+            if (FindObjectOfType(typeof(EnemyAI)) != null) {
+                enemiesInRound.AddRange(FindObjectsOfType(typeof(EnemyAI)) as EnemyAI[]);
+                currRound = Manager.roundNumber;
+            }
             //findO
-            Debug.Log("Enemies: " + enemiesInRound[0]);
+            Debug.Log("Enemies in round: " + enemiesInRound.Count) ;
         }
 
-        
-        foreach (EnemyAI e in enemiesInRound) { 
-        //for (int i = 0; i < enemiesInRound.Length; i++) {
-            //EnemyAI e = enemiesInRound[i];
-            if (Vector3.Distance(transform.position, e.transform.position) < 7) {
-                Debug.Log("Enemies: " + e);
-                Debug.Log(Vector3.Distance(transform.position, e.transform.position));
-                enemiesInRange.Add(e);
-   
-            } else {
-                if (enemiesInRange.Contains(e)) {
-                    enemiesInRange.Remove(e);
+
+        foreach (EnemyAI e in enemiesInRound) {
+            if (e != null) {
+                if (Vector3.Distance(transform.position, e.transform.position) < towerRadius) {
+                    //Debug.Log(Vector3.Distance(transform.position, e.transform.position));
+                    if(!enemiesInRange.Contains(e))
+                        enemiesInRange.Add(e);
+
+                } else {
+                    if (enemiesInRange.Contains(e)) {
+                        enemiesInRange.Remove(e);
+                        Debug.Log("Removing enemy");
+                    }
                 }
+                //Debug.Log("Enemies in range: " + enemiesInRange.Count);
+            } else {
+                enemiesInRange.Remove(e);
+                Debug.Log("Removing enemy");
+                Debug.Log("Enemies in range: " + enemiesInRange.Count);
             }
         }
 
         //Debug.Log("Enemies: " + enemiesInRound);
         if (enemiesInRange.Count > 0) {
             currTarget = enemiesInRange[0];
+        } else {
+            currTarget = null;
         }
     }
 
@@ -66,10 +79,10 @@ public class TowerAI : MonoBehaviour {
             if (currTarget != null) {
                 currProjectile = Instantiate(projectile, transform.position + new Vector3(0, 5, 0), Quaternion.identity);
                 currProjectile.target = currTarget;
-                Debug.Log("Arrow spawned?");
+                //Debug.Log("Arrow spawned?");
             }
-            Debug.Log("Waiting");
-            yield return new WaitForSeconds(rateOfFire);
+            //Debug.Log("Waiting");
+            yield return new WaitForSeconds(1 / rateOfFire);
         }
     }
 }

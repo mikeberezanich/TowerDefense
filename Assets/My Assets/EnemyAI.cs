@@ -7,6 +7,7 @@ public class EnemyAI : MonoBehaviour {
 
     public float health;
     public int pointsAwarded;
+    public int goldAwarded;
     public Transform[] waypoints;
 
     private NavMeshAgent agent;
@@ -15,28 +16,24 @@ public class EnemyAI : MonoBehaviour {
     // Used the waypoint system from http://atsiitech.blogspot.com/2016/02/unity-waypoint-system-with-navmesh.html
 
     // Use this for initialization
-    void Start () {
+    void Start() {
         agent = GetComponent<NavMeshAgent>();
         agent.SetDestination(waypoints[0].position);
 
         waypointCount = waypoints.Length;
         waypointIteration = 0;
-	}
+    }
 
-	// Update is called once per frame
-	void Update () {
+    // Update is called once per frame
+    void Update() {
 
         //Handles movement through the waypoints
-        if (agent.hasPath)
-        {
-            if (agent.remainingDistance < .5f)
-            {
-                if (waypointIteration < waypointCount)
-                {
+        if (agent.hasPath) {
+            if (agent.remainingDistance < .5f) {
+                if (waypointIteration < waypointCount) {
                     agent.SetDestination(waypoints[waypointIteration].position);
                     waypointIteration++;
-                } else
-                {
+                } else {
                     Manager.livesLeft -= 1;
                     Destroy(gameObject, 0f);
                 }
@@ -46,13 +43,13 @@ public class EnemyAI : MonoBehaviour {
 
         //Debug.Log("Health: " + health);
 
-        if (health <= 0)
-        {
+        if (health <= 0) {
             Manager.score += pointsAwarded;
+            Manager.gold += goldAwarded;
             Destroy(gameObject, 0f);
         }
-       
-	}
+
+    }
 
 
 }

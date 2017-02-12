@@ -10,8 +10,7 @@ public class Projectile : MonoBehaviour {
     public float speed;
     public float damage;
 
-    void Start()
-    {
+    void Start() {
         rb = GetComponent<Rigidbody>();
 
         //EnemyAI[] enemyList = FindObjectsOfType(typeof(EnemyAI)) as EnemyAI[];
@@ -20,23 +19,22 @@ public class Projectile : MonoBehaviour {
         //damage = 10;
     }
 
-    void Update()
-    {
+    void Update() {
         //transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(target.transform.position - transform.position), 180 * Time.deltaTime);
-        //enemyPosition = target.transform.position;
+        enemyPosition = target.transform.position;
 
         //Either of these work, play around with later
         //rb.AddForce(Vector3.Normalize((enemyPosition - transform.position)) * speed, ForceMode.Impulse);
     }
 
-    void FixedUpdate()
-    {
-        if (target.isActiveAndEnabled){
-            enemyPosition = target.transform.position;
+    void FixedUpdate() {
+        if (target.isActiveAndEnabled) {
+            //enemyPosition = target.transform.position;
             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(target.transform.position - transform.position), 180 * Time.deltaTime);
-            rb.AddForce(Vector3.Normalize((enemyPosition - transform.position)) * speed, ForceMode.Acceleration);
+            rb.AddForce(Vector3.Normalize((enemyPosition - transform.position)) * speed); //,ForceMode.Acceleration);
+//rb.velocity = Vector3.Normalize((enemyPosition - transform.position)) * speed;
         }
-        
+
         //Either of these work, play around with later
         //rb.AddForce(Vector3.Normalize((enemyPosition - transform.position)) * speed, ForceMode.Impulse);
         //rb.velocity = Vector3.Normalize((enemyPosition - transform.position)) * speed;
@@ -46,20 +44,16 @@ public class Projectile : MonoBehaviour {
 
     }
 
-    void OnCollisionEnter(Collision collision)
-    {
+    void OnCollisionEnter(Collision collision) {
         Debug.Log("Collision between arrow and " + collision.collider);
 
         //Debug.Log(collision.
 
-        if (collision.gameObject.tag == "Enemy")
-        {
+        if (collision.gameObject.tag == "Enemy") {
             target.health -= damage;
             Debug.Log("Destroyed");
             Destroy(gameObject, 0f);
-        }
-        else if (collision.gameObject.name == "Ground")
-        {
+        } else if (collision.gameObject.name == "Ground") {
             Debug.Log("Destroyed");
             Destroy(gameObject, 0f);
         }
