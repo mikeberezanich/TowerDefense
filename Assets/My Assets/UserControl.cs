@@ -27,7 +27,7 @@ namespace UnityStandardAssets.Characters.ThirdPerson {
             // get the third person character ( this should never be null due to require component )
             m_Character = GetComponent<ThirdPersonCharacter>();
 
-            towerHeightOffset = new Vector3(0, 2.9f, 0);
+            towerHeightOffset = new Vector3(0, 2f, 0);
         }
 
 
